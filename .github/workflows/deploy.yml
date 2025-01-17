@@ -63,3 +63,24 @@ jobs:
         run: |
           mv ./build/libs/*SNAPSHOT.jar ./run.jar
           ls
+
+      # EC2로 업로드
+      # https://github.com/appleboy/scp-action
+      # SSH를 통해서 파일 등을 복사(업로드)
+      # 호스트정보(IP), 접속자명(ubuntu), 키파일(pem) -> 시크릿!!
+      # 업로드 대상(run.jar)
+      # 타겟(EC2)의 특정 경로(복사될 위치), /home/ubuntu/server/demo
+      - name: EC2에 jar파일 업로드
+        uses: appleboy/scp-action@v0.1.7
+        # 위의 액션을 위한 파라미터
+        # SSH의 포트를 보안상 이유로 22-> 다른 번호로 변경했다면
+        # PORT 설정 필요
+        # 파일이 여러개면 "파일, 파일, ... "
+        # 원격 서버에 폴더도 자동 생성되는지 검토
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          source: run.jar
+          target: /home/ubuntu/server/demo
+
