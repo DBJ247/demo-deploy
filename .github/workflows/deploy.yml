@@ -6,8 +6,8 @@ on:
   push:
     # 대상 브런치
     branches:
-      # 대상 브런치는 main
-      - main
+      # 2. 대상 브런치는 db
+      - db
 
 # 해야될 일 => jobs
 jobs:
@@ -36,6 +36,10 @@ jobs:
       # 소스 코드 내에 위치(덮어쓰기?, 신규작성?)
       # RDS 세팅된 이후 진행
       # 현재는 skip
+      - name: application.properties 동적 생성
+        run: |
+          echo "${{ secrets.APPLICATION_PRO }}" > ./src/main/resources/application.properties
+          ls ./src/main/resources
 
       # build 준비
       # chmod +x ./gradlew : 퍼미션 오류 발생시 처리
