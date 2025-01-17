@@ -45,11 +45,21 @@ jobs:
         # 1. 빌드용 쉘스크립트(gradlew)를 퍼미션 조정
         # 2. 빌드
         # 3. 현재 위치 확인
+        #    /home/runner/work/demo-deploy/demo-deploy
         # 4. 현재 위치 목록
+        #    build ... src
         # 5. 빌드된 산출물의 목록 확인
+        #    demo-deploy-0.0.1-SNAPSHOT-plain.jar ...
         run: |
           chmod +x ./gradlew
           ./gradlew clean build
           pwd
           ls
           ls ./build/libs
+
+      # 이름이 너무 길므로 적당하게 수정 -> 리눅스 명령어
+      # 파일 위치를 변경하면서 이름도 변경 -> mv
+      - name: 관리상 빌드된 결과물의 이름을 변경 처리
+        run: |
+          mv ./build/libs/*SNAPSHOT.jar ./run.jar
+          ls
